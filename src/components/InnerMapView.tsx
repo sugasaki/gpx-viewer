@@ -30,6 +30,9 @@ const InnerMapView: React.FC<InnerMapViewProps> = ({ gpxContent }) => {
     setMap(event.target as maplibregl.Map);
   }
 
+  // 距離表示
+  const distanceText = distance >= 1000 ? (distance / 1000).toFixed(2) + ' km' : distance.toFixed(2) + ' m';
+
   return (
     <div className="map-container">
       {/* ローディング表示 */}
@@ -38,7 +41,9 @@ const InnerMapView: React.FC<InnerMapViewProps> = ({ gpxContent }) => {
       {distanceLoading && <div className="loading-indicator">{'ルート距離 処理中…'}</div>}
 
       {/* 距離表示 */}
-      {gpxContent && !layerLoading && distance > 0 && <div className="distance-display">ルート距離: {distance}</div>}
+      {gpxContent && !layerLoading && distance > 0 && (
+        <div className="distance-display">ルート距離: {distanceText}</div>
+      )}
 
       {/* 地図 */}
       <div className="map-wrapper">
