@@ -1,0 +1,51 @@
+/* src/components/MapView.css */
+
+/* 全体のコンテナ */
+.map-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* ウィンドウ全体を使用する例 */
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f7fa;
+}
+
+/* ローディング表示 */
+.loading-indicator {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* 距離表示 */
+.distance-display {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  z-index: 10;
+  background: rgba(255, 255, 255, 0.8);
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* 地図を表示するラッパー要素 */
+.map-wrapper {
+  flex: 1 1 auto; /* 親要素の残り高さを埋める */
+  position: relative;
+  overflow: hidden;
+}
+
+/* 標高チャート用ラッパー */
+.chart-wrapper {
+  flex: 0 0 380px; /* 高さを固定にする例 */
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+}
