@@ -44,7 +44,7 @@ export function adjustMapBounds(map: maplibregl.Map, geojson: any) {
 
   const bounds = coords.reduce(
     (b: maplibregl.LngLatBounds, coord: [number, number]) => b.extend(coord),
-    new maplibregl.LngLatBounds(coords[0], coords[0])
+    new maplibregl.LngLatBounds(coords[0], coords[0]),
   );
   map.fitBounds(bounds, { padding: 20 });
 }
