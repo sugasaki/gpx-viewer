@@ -1,7 +1,7 @@
-// src/hooks/useLoadGpxLayer.ts
 import { useEffect } from 'react';
 import maplibregl from 'maplibre-gl';
-import { parseGpxContent, removeExistingLayer, addGpxLayerToMap, adjustMapBounds } from '../utils/gpxHelpers';
+import { parseGpxContent } from '../utils/gpxUtils';
+import { removeExistingLayer, addGpxLayerToMap, adjustMapBounds } from '../utils/mapHelpers';
 
 const useLoadGpxLayer = (map: maplibregl.Map | null, gpxContent: string | null) => {
   useEffect(() => {

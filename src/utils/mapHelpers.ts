@@ -1,15 +1,7 @@
-import * as toGeoJSON from '@mapbox/togeojson';
 import maplibregl from 'maplibre-gl';
 
-/** GPXの文字列を解析し、GeoJSONに変換する */
-export function parseGpxContent(gpxContent: string): any {
-  const parser = new DOMParser();
-  const xmlDoc = parser.parseFromString(gpxContent, 'application/xml');
-  return toGeoJSON.gpx(xmlDoc);
-}
-
-/** 既存の指定レイヤー（ここでは'route'）があれば削除する */
-export function removeExistingLayer(map: maplibregl.Map, layerId: string) {
+/** 既存の指定レイヤー（例: 'route'）があれば削除する */
+export function removeExistingLayer(map: maplibregl.Map, layerId: string): void {
   if (map.getLayer(layerId)) {
     map.removeLayer(layerId);
   }
@@ -18,8 +10,8 @@ export function removeExistingLayer(map: maplibregl.Map, layerId: string) {
   }
 }
 
-/** GPXから変換したGeoJSONを使って、ソースとレイヤーをマップに追加する */
-export function addGpxLayerToMap(map: maplibregl.Map, geojson: any) {
+/** GeoJSONを使って、マップにソースとレイヤーを追加する */
+export function addGpxLayerToMap(map: maplibregl.Map, geojson: any): void {
   map.addSource('route', {
     type: 'geojson',
     data: geojson,
@@ -36,12 +28,10 @@ export function addGpxLayerToMap(map: maplibregl.Map, geojson: any) {
 }
 
 /** GeoJSONのルートに合わせて、マップの表示範囲を調整する */
-export function adjustMapBounds(map: maplibregl.Map, geojson: any) {
+export function adjustMapBounds(map: maplibregl.Map, geojson: any): void {
   if (geojson.features.length === 0) return;
-
   const coords = geojson.features[0].geometry.coordinates;
   if (!coords || coords.length === 0) return;
-
   const bounds = coords.reduce(
     (b: maplibregl.LngLatBounds, coord: [number, number]) => b.extend(coord),
     new maplibregl.LngLatBounds(coords[0], coords[0]),
