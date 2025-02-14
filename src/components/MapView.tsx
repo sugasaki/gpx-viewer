@@ -1,9 +1,10 @@
-import React, { useState, useMemo } from 'react';
+// src/components/MapView.tsx
+import React, { useState } from 'react';
 import Map from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
 import useLoadGpxLayer from '../hooks/useLoadGpxLayer';
+import useComputeRouteDistance from '../hooks/useComputeRouteDistance';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { computeRouteDistance, parseGpxContent } from '../utils/gpxUtils';
 
 interface MapViewProps {
   gpxContent: string | null;
@@ -12,35 +13,31 @@ interface MapViewProps {
 const MapView: React.FC<MapViewProps> = ({ gpxContent }) => {
   const [mapInstance, setMapInstance] = useState<maplibregl.Map | null>(null);
 
+  // マップ読み込み完了時に mapInstance を取得
   const handleLoad = (event: any) => {
     const map = event.target;
     setMapInstance(map);
   };
 
-  // GPXファイルが読み込まれている場合、マップへレイヤー追加
-  useLoadGpxLayer(mapInstance, gpxContent);
+  // マップへの GPX レイヤー追加と表示範囲調整の処理の loading 状態を取得
+  const { loading: layerLoading } = useLoadGpxLayer(mapInstance, gpxContent);
 
-  // GPX内容がある場合にGeoJSONに変換し、ルート距離（メートル）を計算
-  const routeDistance = useMemo(() => {
-    if (gpxContent) {
-      try {
-        const geojson = parseGpxContent(gpxContent);
-        return computeRouteDistance(geojson);
-      } catch (error) {
-        console.error('Error computing route distance:', error);
-        return 0;
-      }
-    }
-    return 0;
-  }, [gpxContent]);
+  // GPX 内容からルート距離の計算とその loading 状態を取得
+  const { distance: routeDistance, loading: distanceLoading } = useComputeRouteDistance(gpxContent);
 
-  // 距離が1000m以上ならkm表示、それ未満ならm表示
+  // 距離の表示形式：1000m以上なら km、未満なら m
   const distanceText =
     routeDistance >= 1000 ? (routeDistance / 1000).toFixed(2) + ' km' : routeDistance.toFixed(2) + ' m';
 
   return (
     <div className="map-container">
-      {gpxContent && <div className="distance-display">Route Distance: {distanceText}</div>}
+      {!mapInstance && <div className="loading-indicator">{'マップ読み込み中…'}</div>}
+      {layerLoading && <div className="loading-indicator">{'GPX 処理中…'}</div>}
+      {distanceLoading && <div className="loading-indicator">{'ルート距離 処理中…'}</div>}
+
+      {gpxContent && !layerLoading && routeDistance > 0 && (
+        <div className="distance-display">ルート距離: {distanceText}</div>
+      )}
       <Map
         initialViewState={{
           longitude: 139.767,
