@@ -681,6 +681,11 @@
     "@types/mapbox__point-geometry" "*"
     "@types/pbf" "*"
 
+"@types/parse5@^6.0.3":
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/@types/parse5/-/parse5-6.0.3.tgz#705bb349e789efa06f43f128cef51240753424cb"
+  integrity sha512-SuT16Q1K51EAVPz1K29DJ/sXjhSQ0zjvsypYJ6tlwVsRV9jwW5Adq2ch8Dq8kDBCkYnELS7N7VNCSB5nC56t/g==
+
 "@types/pbf@*", "@types/pbf@^3.0.5":
   version "3.0.5"
   resolved "https://registry.yarnpkg.com/@types/pbf/-/pbf-3.0.5.tgz#a9495a58d8c75be4ffe9a0bd749a307715c07404"
@@ -704,6 +709,13 @@
   integrity sha512-Z0pOY34GDFl3Q6hUFYf3HkTwKEE02e7QgtJppBt+beEAxnyOpJua+voGFvxINBHa06GwLFFym7gRPY2SiKIfIA==
   dependencies:
     "@types/geojson" "*"
+
+"@types/xmlserializer@^0.6.6":
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/@types/xmlserializer/-/xmlserializer-0.6.6.tgz#ee6be31efcd84b4f34f7e85b7e105bfdc2d78838"
+  integrity sha512-FmDkyzB7aZXDMVx+ODVig/QZDUYA5+pa8a0ljBjBaKEsdsB1l5xCj1+Ex6YE/4K1v5VbSPPfft0tLEGxXg5uqw==
+  dependencies:
+    "@types/parse5" "^6.0.3"
 
 "@typescript-eslint/eslint-plugin@8.23.0":
   version "8.23.0"
@@ -2047,6 +2059,11 @@ xmldom@~0.1.19:
   version "0.1.31"
   resolved "https://registry.yarnpkg.com/xmldom/-/xmldom-0.1.31.tgz#b76c9a1bd9f0a9737e5a72dc37231cf38375e2ff"
   integrity sha512-yS2uJflVQs6n+CyjHoaBmVSqIDevTAWrzMmjG1Gc7h1qQ7uVozNhEPJAwZXWyGQ/Gafo3fCwrcaokezLPupVyQ==
+
+xmlserializer@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.yarnpkg.com/xmlserializer/-/xmlserializer-0.6.1.tgz#14099f60272e16cb608be3758992f998070cc29a"
+  integrity sha512-FNb0eEqqUUbnuvxuHqNuKH8qCGKqxu+558Zi8UzOoQk8Z9LdvpONK+v7m3gpKVHrk5Aq+0nNLsKxu/6OYh7Umw==
 
 yallist@^3.0.2:
   version "3.1.1"
