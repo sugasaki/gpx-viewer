@@ -1,4 +1,3 @@
-// src/utils/gpxHelpers.ts
 import * as toGeoJSON from '@mapbox/togeojson';
 import maplibregl from 'maplibre-gl';
 
