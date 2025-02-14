@@ -1,6 +1,7 @@
 // src/hooks/useComputeRouteDistance.ts
 import { useState, useEffect } from 'react';
-import { parseGpxContent, computeRouteDistance } from '../utils/gpxUtils';
+import { getDistanceFromGpxAsync } from '../utils/gpxDistanceAsync';
+import { to } from '../utils/to';
 
 interface UseComputeRouteDistanceResult {
   distance: number;
@@ -8,8 +9,8 @@ interface UseComputeRouteDistanceResult {
 }
 
 const useComputeRouteDistance = (gpxContent: string | null): UseComputeRouteDistanceResult => {
-  const [distance, setDistance] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [distance, setDistance] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (!gpxContent) {
@@ -17,21 +18,20 @@ const useComputeRouteDistance = (gpxContent: string | null): UseComputeRouteDist
       setLoading(false);
       return;
     }
-    setLoading(true);
 
-    // 少しの遅延を与えることで、loading 状態の反映を確実にする
-    setTimeout(() => {
-      try {
-        const geojson = parseGpxContent(gpxContent);
-        const computedDistance = computeRouteDistance(geojson);
-        setDistance(computedDistance);
-      } catch (error) {
+    const computeDistance = async () => {
+      setLoading(true);
+      const [error, computedDistance] = await to(getDistanceFromGpxAsync(gpxContent));
+      if (error) {
         console.error('ルート距離計算エラー:', error);
         setDistance(0);
-      } finally {
-        setLoading(false);
+      } else {
+        setDistance(computedDistance as number);
       }
-    }, 100);
+      setLoading(false);
+    };
+
+    computeDistance();
   }, [gpxContent]);
 
   return { distance, loading };
