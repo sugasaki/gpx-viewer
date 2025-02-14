@@ -1,5 +1,3 @@
-// src/components/ElevationChart.tsx
-import React from 'react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,8 +7,13 @@ import {
   Title,
   Tooltip,
   Legend,
+  ChartEvent,
+  ActiveElement,
+  Chart,
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
+import { useMarkerContext } from '../contexts/MarkerContext';
+import './MapView.css'; // ここでCSSファイルを読み込む
 
 // Chart.js に必要なコンポーネントを登録
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -26,8 +29,10 @@ interface ElevationChartProps {
   trackPoints: TrackPoint[];
 }
 
-const ElevationChart: React.FC<ElevationChartProps> = ({ trackPoints }) => {
-  // x軸: 距離(km), y軸: 標高(m)
+export default function ElevationChart({ trackPoints }: ElevationChartProps) {
+  const { setLatLon } = useMarkerContext(); // マーカー座標を更新する関数
+
+  // X軸: 距離(km), Y軸: 標高(m)
   const data = {
     labels: trackPoints.map((tp) => (tp.distance / 1000).toFixed(2)),
     datasets: [
@@ -35,16 +40,57 @@ const ElevationChart: React.FC<ElevationChartProps> = ({ trackPoints }) => {
         label: 'Elevation (m)',
         data: trackPoints.map((tp) => tp.elevation),
         borderColor: 'orange',
-        backgroundColor: 'rgba(255, 165, 0, 0.3)',
+        backgroundColor: 'rgba(255,165,0,0.3)',
         fill: true,
-        tension: 0.1, // 折れ線を少し滑らかに
+        tension: 0.1,
       },
     ],
   };
 
+  function findNearestTrackPoint(xValueKm: number): TrackPoint | null {
+    if (trackPoints.length === 0) return null;
+    const xValueM = xValueKm * 1000;
+    let nearest = trackPoints[0];
+    let minDiff = Infinity;
+    for (const tp of trackPoints) {
+      const diff = Math.abs(tp.distance - xValueM);
+      if (diff < minDiff) {
+        minDiff = diff;
+        nearest = tp;
+      }
+    }
+    return nearest;
+  }
+
   const options = {
     responsive: true,
-    maintainAspectRatio: false, // 親要素の高さに応じて伸縮
+    maintainAspectRatio: false,
+    onHover: (event: ChartEvent, _active: ActiveElement[], chart: Chart) => {
+      // console.log('event', event);
+      if (!event.x) {
+        // チャート外の場合
+        setLatLon(null, null);
+        return;
+      }
+      const xScale = chart.scales.x;
+      if (!xScale) {
+        setLatLon(null, null);
+        return;
+      }
+      const xValueKm = xScale.getValueForPixel(event.x);
+      if (typeof xValueKm !== 'number') {
+        setLatLon(null, null);
+        return;
+      }
+      // 最も近い TrackPoint を検索
+      const nearest = findNearestTrackPoint(xValueKm);
+      if (!nearest) {
+        setLatLon(null, null);
+        return;
+      }
+      // console.log('nearest', nearest);
+      setLatLon(nearest.lat, nearest.lon);
+    },
     scales: {
       x: {
         title: {
@@ -59,16 +105,6 @@ const ElevationChart: React.FC<ElevationChartProps> = ({ trackPoints }) => {
         },
       },
     },
-    // グラフ上でクリックした地点を取得して地図と連動するなどの拡張も可能
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    onClick: (elements: any) => {
-      if (elements.length > 0) {
-        const index = elements[0].index;
-        const point = trackPoints[index];
-        console.log('Clicked track point:', point);
-        // ここで地図にマーカーを立てたり、flyTo したりできる
-      }
-    },
   };
 
   return (
@@ -76,6 +112,4 @@ const ElevationChart: React.FC<ElevationChartProps> = ({ trackPoints }) => {
       <Line data={data} options={options} />
     </div>
   );
-};
-
-export default ElevationChart;
+}

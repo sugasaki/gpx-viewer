@@ -45,7 +45,10 @@
 
 /* 標高チャート用ラッパー */
 .chart-wrapper {
-  flex: 0 0 380px; /* 高さを固定にする例 */
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 370px; /* 固定高さ */
   background-color: #fff;
   border-top: 1px solid #ccc;
 }
