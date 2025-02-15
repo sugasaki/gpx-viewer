@@ -1,21 +1,23 @@
-import React from 'react';
+// src/components/MapView.tsx
+import React, { useState } from 'react';
 import Map from 'react-map-gl/maplibre';
 import maplibregl from 'maplibre-gl';
-import { useMarkerContext } from '../contexts/MarkerContext';
-import MapMarker from './MapMarker';
-import ElevationChart from './ElevationChart';
 import useLoadGpxLayer from '../hooks/useLoadGpxLayer';
 import useComputeRouteDistance from '../hooks/useComputeRouteDistance';
 import { useTrackPoints } from '../hooks/useTrackPoints';
+import ElevationChart from './ElevationChart';
+import 'maplibre-gl/dist/maplibre-gl.css';
 import './MapView.css'; // ここでCSSファイルを読み込む
-import './MapView.css'; // ここでCSSファイルを読み込む
+import { useMarkerContext } from '../contexts/MarkerContext';
+import MapMarker from './MapMarker';
 
-interface InnerMapViewProps {
+interface MapViewProps {
   gpxContent: string | null;
 }
 
-const InnerMapView: React.FC<InnerMapViewProps> = ({ gpxContent }) => {
-  const { setMap, map: mapInstance } = useMarkerContext();
+const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
+  const [mapInstance, setMapInstance] = useState<maplibregl.Map | null>(null);
+  const { setMap } = useMarkerContext();
 
   // MapLibre レイヤー表示
   const { loading: layerLoading } = useLoadGpxLayer(mapInstance, gpxContent);
@@ -26,19 +28,24 @@ const InnerMapView: React.FC<InnerMapViewProps> = ({ gpxContent }) => {
   // トラックポイント抽出
   const trackPoints = useTrackPoints(gpxContent);
 
-  function handleMapLoad(event: any) {
-    setMap(event.target as maplibregl.Map);
-  }
+  // マップ読み込み完了時
+  const handleLoad = (event: any) => {
+    const map = event.target;
+    setMapInstance(map);
+    setMap(map as maplibregl.Map);
 
-  // 距離表示
+    // new maplibregl.Marker().setLngLat([139.767, 35.681]).addTo(map);
+  };
+
+  // 距離表示用
   const distanceText = distance >= 1000 ? (distance / 1000).toFixed(2) + ' km' : distance.toFixed(2) + ' m';
 
   return (
     <div className="map-container">
       {/* ローディング表示 */}
-      {!mapInstance && <div className="loading-indicator">{'マップ読み込み中…'}</div>}
-      {layerLoading && <div className="loading-indicator">{'GPX 処理中…'}</div>}
-      {distanceLoading && <div className="loading-indicator">{'ルート距離 処理中…'}</div>}
+      {!mapInstance && <div className="loading-indicator">マップ読み込み中…</div>}
+      {layerLoading && <div className="loading-indicator">GPX 処理中…</div>}
+      {distanceLoading && <div className="loading-indicator">ルート距離 処理中…</div>}
 
       {/* 距離表示 */}
       {gpxContent && !layerLoading && distance > 0 && (
@@ -56,7 +63,7 @@ const InnerMapView: React.FC<InnerMapViewProps> = ({ gpxContent }) => {
           mapLib={maplibregl}
           style={{ width: '100%', height: '100%' }} // 親要素に合わせて拡大
           mapStyle="https://demotiles.maplibre.org/style.json"
-          onLoad={handleMapLoad}
+          onLoad={handleLoad}
         />
         {/* マーカーコンポーネント */}
         <MapMarker color="red" />

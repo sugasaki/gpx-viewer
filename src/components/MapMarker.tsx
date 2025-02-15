@@ -14,13 +14,10 @@ interface MapMarkerProps {
 const MapMarker: React.FC<MapMarkerProps> = ({ color = 'red' }) => {
   const { map, lat, lon } = useMarkerContext();
   const markerRef = useRef<maplibregl.Marker | null>(null);
-
-  console.log('lat1', lat, 'lon1', lon);
-
+  //   console.log('lat1', lat, 'lon1', lon);
   useEffect(() => {
     if (!map) return;
-
-    console.log('lat2', lat, 'lon2', lon);
+    // console.log('lat2', lat, 'lon2', lon);
 
     // マーカー未生成なら作成
     if (!markerRef.current) {
