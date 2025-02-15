@@ -41,7 +41,7 @@ export default function ElevationChart({ trackPoints }: ElevationChartProps) {
         data: trackPoints.map((tp) => tp.elevation),
         borderColor: 'orange',
         backgroundColor: 'rgba(255,165,0,0.3)',
-        fill: true,
+        // fill: true,
         tension: 0.1,
       },
     ],
@@ -108,7 +108,7 @@ export default function ElevationChart({ trackPoints }: ElevationChartProps) {
   };
 
   return (
-    <div style={{ width: '100%', height: '300px' }}>
+    <div style={{ width: '100%', height: 'i300px' }}>
       <Line data={data} options={options} />
     </div>
   );

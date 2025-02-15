@@ -34,7 +34,7 @@ const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
     setMapInstance(map);
     setMap(map as maplibregl.Map);
 
-    new maplibregl.Marker().setLngLat([139.767, 35.681]).addTo(map);
+    // new maplibregl.Marker().setLngLat([139.767, 35.681]).addTo(map);
   };
 
   // 距離表示用
