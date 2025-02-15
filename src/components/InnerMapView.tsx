@@ -71,7 +71,7 @@ const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
 
       {/* 標高チャート */}
       {trackPoints.length > 1 && (
-        <div className="chart-wrapper">
+        <div style={{ width: '100%', height: '365px' }}>
           <ElevationChart trackPoints={trackPoints} />
         </div>
       )}

@@ -104,7 +104,7 @@ export default function ElevationChart({ trackPoints }: ElevationChartProps) {
   };
 
   return (
-    <div style={{ width: '100%', height: 'i300px' }}>
+    <div style={{ width: '100%', height: '300px' }}>
       <Line data={data} options={options} />
     </div>
   );
