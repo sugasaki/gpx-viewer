@@ -8,6 +8,8 @@ import { useTrackPoints } from '../hooks/useTrackPoints';
 import ElevationChart from './ElevationChart';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import './MapView.css'; // ここでCSSファイルを読み込む
+import { useMarkerContext } from '../contexts/MarkerContext';
+import MapMarker from './MapMarker';
 
 interface MapViewProps {
   gpxContent: string | null;
@@ -15,6 +17,7 @@ interface MapViewProps {
 
 const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
   const [mapInstance, setMapInstance] = useState<maplibregl.Map | null>(null);
+  const { setMap } = useMarkerContext();
 
   // MapLibre レイヤー表示
   const { loading: layerLoading } = useLoadGpxLayer(mapInstance, gpxContent);
@@ -27,9 +30,10 @@ const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
 
   // マップ読み込み完了時
   const handleLoad = (event: any) => {
-    setMapInstance(event.target);
-
     const map = event.target;
+    setMapInstance(map);
+    setMap(map as maplibregl.Map);
+
     new maplibregl.Marker().setLngLat([139.767, 35.681]).addTo(map);
   };
 
@@ -61,6 +65,8 @@ const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
           mapStyle="https://demotiles.maplibre.org/style.json"
           onLoad={handleLoad}
         />
+        {/* マーカーコンポーネント */}
+        <MapMarker color="red" />
       </div>
 
       {/* 標高チャート */}
