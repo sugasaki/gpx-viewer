@@ -56,14 +56,15 @@ const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
       <div className="map-wrapper">
         <Map
           initialViewState={{
-            longitude: 139.767,
-            latitude: 35.681,
-            zoom: 12,
+            longitude: 137.49084382124488,
+            latitude: 37.37011898768688,
+            zoom: 3.7536115701282524,
           }}
           mapLib={maplibregl}
           style={{ width: '100%', height: '100%' }} // 親要素に合わせて拡大
           mapStyle="https://demotiles.maplibre.org/style.json"
           onLoad={handleLoad}
+          onMove={(event) => console.log('onMove', event)}
         />
         {/* マーカーコンポーネント */}
         <MapMarker color="red" />
