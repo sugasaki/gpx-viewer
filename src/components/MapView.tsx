@@ -19,6 +19,7 @@ const MapView: React.FC<MapViewProps> = ({ gpxContent }) => {
   const handleLoad = (event: any) => {
     const map = event.target;
     setMapInstance(map);
+    new maplibregl.Marker().setLngLat([139.767, 35.681]).addTo(map);
   };
 
   // 解析済みGeoJSONをMapLibreのレイヤー追加用カスタムフックに渡す
