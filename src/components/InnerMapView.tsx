@@ -64,7 +64,7 @@ const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
           style={{ width: '100%', height: '100%' }} // 親要素に合わせて拡大
           mapStyle="https://demotiles.maplibre.org/style.json"
           onLoad={handleLoad}
-          onMove={(event) => console.log('onMove', event)}
+          // onMove={(event) => console.log('onMove', event)}
         />
         {/* マーカーコンポーネント */}
         <MapMarker color="red" />
