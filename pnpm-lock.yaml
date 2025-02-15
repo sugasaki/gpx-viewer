@@ -43,7 +43,7 @@ importers:
         specifier: ^4.3.4
         version: 4.3.4(vite@6.1.0)
       '@vitest/ui':
-        specifier: ^3.0.5
+        specifier: 3.0.5
         version: 3.0.5(vitest@3.0.5)
       eslint:
         specifier: ^9.20.1
@@ -67,7 +67,7 @@ importers:
         specifier: ^6.1.0
         version: 6.1.0
       vitest:
-        specifier: ^3.0.5
+        specifier: 3.0.5
         version: 3.0.5(@vitest/ui@3.0.5)
 
 packages:
