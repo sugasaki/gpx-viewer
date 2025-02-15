@@ -1,5 +1,6 @@
 import {
   Chart as ChartJS,
+  ChartOptions,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -82,7 +83,7 @@ export default function ElevationChart({ trackPoints }: ElevationChartProps) {
     setLatLon(nearest.lat, nearest.lon);
   };
 
-  const options = {
+  const options: ChartOptions<'line'> = {
     responsive: true,
     maintainAspectRatio: false,
     onHover: onHoverEvent,
