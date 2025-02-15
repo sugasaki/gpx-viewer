@@ -28,6 +28,9 @@ const MapView: React.FC<MapViewProps> = ({ gpxContent }) => {
   // マップ読み込み完了時
   const handleLoad = (event: any) => {
     setMapInstance(event.target);
+
+    const map = event.target;
+    new maplibregl.Marker().setLngLat([139.767, 35.681]).addTo(map);
   };
 
   // 距離表示用
