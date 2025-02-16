@@ -15,6 +15,8 @@ interface MapViewProps {
   gpxContent: string | null;
 }
 
+const mapStyleURL = `https://api.maptiler.com/maps/streets/style.json?key=${import.meta.env.VITE_MAPTILER_KEY}`;
+
 const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
   const [mapInstance, setMapInstance] = useState<maplibregl.Map | null>(null);
   const { setMap } = useMarkerContext();
@@ -62,7 +64,7 @@ const InnerMapView: React.FC<MapViewProps> = ({ gpxContent }) => {
           }}
           mapLib={maplibregl}
           style={{ width: '100%', height: '100%' }} // 親要素に合わせて拡大
-          mapStyle="https://demotiles.maplibre.org/style.json"
+          mapStyle={mapStyleURL}
           onLoad={handleLoad}
           // onMove={(event) => console.log('onMove', event)}
         />
