@@ -45,7 +45,13 @@
 
 /* 標高チャート用ラッパー */
 .chart-wrapper {
-  flex: 0 0 380px; /* 高さを固定にする例 */
+  flex: 1;
   background-color: #fff;
   border-top: 1px solid #ccc;
+}
+
+/* ElevationChart のスタイル */
+.elevation-chart {
+  width: 100%;
+  height: 100%;
 }
